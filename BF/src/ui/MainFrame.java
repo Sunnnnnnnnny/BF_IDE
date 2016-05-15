@@ -7,7 +7,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.rmi.RemoteException;
 
+import javax.swing.BorderFactory;
 import javax.swing.GroupLayout.Alignment;
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
@@ -31,12 +33,20 @@ public class MainFrame extends JFrame {
 		frame.setResizable(false);
 
 		JMenuBar menuBar = new JMenuBar();
+		JMenu logMenu = new JMenu("Login");
+		// logMenu.setIcon(new
+		// ImageIcon(MainFrame.class.getResource("/login.jpg")));
 		JMenu fileMenu = new JMenu("File");
 		JMenu runMenu = new JMenu("Run");
 		JMenu VersionMenu = new JMenu("Version");
+		menuBar.add(logMenu);
 		menuBar.add(fileMenu);
 		menuBar.add(runMenu);
 		menuBar.add(VersionMenu);
+		JMenuItem loginMenuItem = new JMenuItem("Login");
+		logMenu.add(loginMenuItem);
+		JMenuItem logoutMenuItem = new JMenuItem("Logout");
+		logMenu.add(logoutMenuItem);
 		JMenuItem newMenuItem = new JMenuItem("New");
 		fileMenu.add(newMenuItem);
 		JMenuItem openMenuItem = new JMenuItem("Open");
@@ -47,6 +57,8 @@ public class MainFrame extends JFrame {
 		runMenu.add(runMenuItem);
 		frame.setJMenuBar(menuBar);
 
+		loginMenuItem.addActionListener(new MenuItemActionListener());
+		logoutMenuItem.addActionListener(new MenuItemActionListener());
 		newMenuItem.addActionListener(new MenuItemActionListener());
 		openMenuItem.addActionListener(new MenuItemActionListener());
 		saveMenuItem.addActionListener(new SaveActionListener());
@@ -55,9 +67,7 @@ public class MainFrame extends JFrame {
 		JPanel panel = new JPanel();
 		panel.setLayout(new BorderLayout());
 
-		Color AliceBlue = new Color(240, 248, 255);
-		Color Bisque = new Color(255, 228, 196);
-
+		// 初始化文本框
 		textAreaOfCode = new JTextArea();
 		textAreaOfInput = new JTextArea(8, 25);
 		textAreaOfResult = new JTextArea(8, 25);
@@ -68,17 +78,22 @@ public class MainFrame extends JFrame {
 		textAreaOfInput.setMargin(new Insets(10, 10, 10, 10));
 		textAreaOfResult.setMargin(new Insets(10, 10, 10, 10));
 
+		// 设置文本框底色
+		Color AliceBlue = new Color(240, 248, 255);
+		Color Bisque = new Color(255, 228, 196);
 		textAreaOfCode.setBackground(AliceBlue);
 		textAreaOfInput.setBackground(Bisque);
 		textAreaOfResult.setBackground(Bisque);
 		panel.setBackground(AliceBlue);
 
+		textAreaOfCode.setBorder(BorderFactory.createTitledBorder("BF code"));
+		textAreaOfInput.setBorder(BorderFactory.createTitledBorder("Input"));
+		textAreaOfResult.setBorder(BorderFactory.createTitledBorder("Result"));
+
 		frame.add(panel, BorderLayout.SOUTH);
 		frame.add(textAreaOfCode, BorderLayout.CENTER);
 		panel.add(textAreaOfInput, BorderLayout.WEST);
 		panel.add(textAreaOfResult, BorderLayout.EAST);
-		textAreaOfInput.setText("input:");
-		textAreaOfResult.setText("result:");
 
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setSize(600, 500);
@@ -93,12 +108,14 @@ public class MainFrame extends JFrame {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			String cmd = e.getActionCommand();
-			if (cmd.equals("Open")) {
+			if (cmd.equals("Login")) {
+				textAreaOfCode.setText("Login");
+			} else if (cmd.equals("Logout")) {
+				textAreaOfCode.setText("Logout");
+			} else if (cmd.equals("Open")) {
 				textAreaOfCode.setText("Open");
-			} else if (cmd.equals("Save")) {
-				textAreaOfCode.setText("Save");
 			} else if (cmd.equals("Run")) {
-				// resultLabel.setText("Hello, result");
+				textAreaOfResult.setText("Hello, result");
 
 			}
 		}
