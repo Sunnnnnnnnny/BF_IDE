@@ -20,6 +20,7 @@ import javax.swing.JTextArea;
 import javax.swing.border.Border;
 
 import rmi.RemoteHelper;
+import service.ExecuteService;
 
 public class MainFrame extends JFrame {
 	private JTextArea textAreaOfCode;
@@ -34,8 +35,6 @@ public class MainFrame extends JFrame {
 
 		JMenuBar menuBar = new JMenuBar();
 		JMenu logMenu = new JMenu("Login");
-		// logMenu.setIcon(new
-		// ImageIcon(MainFrame.class.getResource("/login.jpg")));
 		JMenu fileMenu = new JMenu("File");
 		JMenu runMenu = new JMenu("Run");
 		JMenu VersionMenu = new JMenu("Version");
@@ -115,7 +114,14 @@ public class MainFrame extends JFrame {
 			} else if (cmd.equals("Open")) {
 				textAreaOfCode.setText("Open");
 			} else if (cmd.equals("Run")) {
-				textAreaOfResult.setText("Hello, result");
+				String code = textAreaOfCode.getText();
+				String param = textAreaOfInput.getText() + "\n";
+				try {
+					String result = RemoteHelper.getInstance().getExecuteService().execute(code, param);
+					textAreaOfResult.setText(result);
+				} catch (RemoteException e1) {
+					e1.printStackTrace();
+				}
 
 			}
 		}

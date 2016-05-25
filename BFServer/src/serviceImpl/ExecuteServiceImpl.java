@@ -18,7 +18,7 @@ public class ExecuteServiceImpl implements ExecuteService {
 		// TODO Auto-generated method stub
 		int ptrOfParam = 0;// 输入字段指针
 		int ptrOfCharlist = 0;// 运行字段指针
-		//int numOfOffset = 0;// 计算偏移量（没有用到）
+		// int numOfOffset = 0;// 计算偏移量（没有用到）
 		String result = "";
 		ArrayList<Integer> charlist = new ArrayList<Integer>();
 
@@ -122,12 +122,15 @@ public class ExecuteServiceImpl implements ExecuteService {
 				}
 				break;
 
-			case ' ':
+			case '\0':
 				ptrOfCode++;
 				break;
 
+			case ' ':
+				break;
+
 			default:
-				System.out.println("Wrong code, please check!");
+				return "Wrong code, please check!";
 
 			}
 		}

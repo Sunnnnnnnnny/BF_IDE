@@ -12,13 +12,14 @@ import ui.MainFrame;
 public class ClientRunner {
 	private RemoteHelper remoteHelper;
 	
-	public ClientRunner() {
+	public ClientRunner() throws MalformedURLException, RemoteException, NotBoundException {
 		linkToServer();
 		initGUI();
 	}
 	
 	private void linkToServer() {
 		try {
+			System.out.println("linking...");
 			remoteHelper = RemoteHelper.getInstance();
 			remoteHelper.setRemote(Naming.lookup("rmi://localhost:8888/DataRemoteObject"));
 			System.out.println("linked");
@@ -31,7 +32,7 @@ public class ClientRunner {
 		}
 	}
 	
-	private void initGUI() {
+	private void initGUI() throws MalformedURLException, RemoteException, NotBoundException {
 		MainFrame mainFrame = new MainFrame();
 	}
 	
@@ -44,7 +45,7 @@ public class ClientRunner {
 		}
 	}
 	
-	public static void main(String[] args){
+	public static void main(String[] args) throws MalformedURLException, RemoteException, NotBoundException{
 		ClientRunner cr = new ClientRunner();
 		//cr.test();
 	}
