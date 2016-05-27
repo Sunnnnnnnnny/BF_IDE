@@ -2,6 +2,7 @@ package ui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -10,13 +11,16 @@ import java.rmi.RemoteException;
 import javax.swing.BorderFactory;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.JTextArea;
+import javax.swing.JTextField;
 import javax.swing.border.Border;
 
 import rmi.RemoteHelper;
@@ -60,8 +64,9 @@ public class MainFrame extends JFrame {
 		logoutMenuItem.addActionListener(new MenuItemActionListener());
 		newMenuItem.addActionListener(new MenuItemActionListener());
 		openMenuItem.addActionListener(new MenuItemActionListener());
-		saveMenuItem.addActionListener(new SaveActionListener());
 		runMenuItem.addActionListener(new MenuItemActionListener());
+		saveMenuItem.addActionListener(new SaveActionListener());
+		loginMenuItem.addActionListener(new loginActionListener());
 
 		JPanel panel = new JPanel();
 		panel.setLayout(new BorderLayout());
@@ -85,6 +90,12 @@ public class MainFrame extends JFrame {
 		textAreaOfResult.setBackground(Bisque);
 		panel.setBackground(AliceBlue);
 
+//		Font f = new Font("", 0, 12);
+//
+//		textAreaOfCode.setFont(f);
+//		textAreaOfInput.setFont(f);
+//		textAreaOfResult.setFont(f);
+
 		textAreaOfCode.setBorder(BorderFactory.createTitledBorder("BF code"));
 		textAreaOfInput.setBorder(BorderFactory.createTitledBorder("Input"));
 		textAreaOfResult.setBorder(BorderFactory.createTitledBorder("Result"));
@@ -107,9 +118,7 @@ public class MainFrame extends JFrame {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			String cmd = e.getActionCommand();
-			if (cmd.equals("Login")) {
-				textAreaOfCode.setText("Login");
-			} else if (cmd.equals("Logout")) {
+			if (cmd.equals("Logout")) {
 				textAreaOfCode.setText("Logout");
 			} else if (cmd.equals("Open")) {
 				textAreaOfCode.setText("Open");
@@ -140,4 +149,16 @@ public class MainFrame extends JFrame {
 		}
 
 	}
+
+	class loginActionListener implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			// TODO Auto-generated method stub
+
+			LoginFrame loginFrame = new LoginFrame();
+
+		}
+	}
+
 }
