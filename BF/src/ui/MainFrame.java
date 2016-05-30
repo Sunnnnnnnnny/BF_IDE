@@ -7,6 +7,10 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.rmi.RemoteException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Enumeration;
 
 import javax.swing.BorderFactory;
 import javax.swing.GroupLayout.Alignment;
@@ -21,7 +25,9 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.UIManager;
 import javax.swing.border.Border;
+import javax.swing.plaf.FontUIResource;
 
 import rmi.RemoteHelper;
 import service.ExecuteService;
@@ -30,51 +36,64 @@ public class MainFrame extends JFrame {
 	private JTextArea textAreaOfCode;
 	private JTextArea textAreaOfInput;
 	private JTextArea textAreaOfResult;
+	public JMenu versionMenu = new JMenu("Version");
+	private int indexOfVersion = 0;
+	public LoginFrame loginFrame = new LoginFrame();
+	public Font font = new Font("alias", Font.PLAIN, 18);
 
-	public MainFrame() {
+	public void createMainFrame() {
 		// 创建窗体
+
 		JFrame frame = new JFrame("BF Client");
 		frame.setLayout(new BorderLayout());
 		frame.setResizable(false);
 
 		JMenuBar menuBar = new JMenuBar();
 		JMenu logMenu = new JMenu("Login");
+		logMenu.setFont(font);
 		JMenu fileMenu = new JMenu("File");
+		fileMenu.setFont(font);
 		JMenu runMenu = new JMenu("Run");
-		JMenu VersionMenu = new JMenu("Version");
+		runMenu.setFont(font);
+		versionMenu.setFont(font);
+
 		menuBar.add(logMenu);
 		menuBar.add(fileMenu);
 		menuBar.add(runMenu);
-		menuBar.add(VersionMenu);
+		menuBar.add(versionMenu);
 		JMenuItem loginMenuItem = new JMenuItem("Login");
+		loginMenuItem.setFont(font);
 		logMenu.add(loginMenuItem);
 		JMenuItem logoutMenuItem = new JMenuItem("Logout");
+		logoutMenuItem.setFont(font);
 		logMenu.add(logoutMenuItem);
 		JMenuItem newMenuItem = new JMenuItem("New");
+		newMenuItem.setFont(font);
 		fileMenu.add(newMenuItem);
-		JMenuItem openMenuItem = new JMenuItem("Open");
-		fileMenu.add(openMenuItem);
 		JMenuItem saveMenuItem = new JMenuItem("Save");
+		saveMenuItem.setFont(font);
 		fileMenu.add(saveMenuItem);
 		JMenuItem runMenuItem = new JMenuItem("Run");
+		runMenuItem.setFont(font);
 		runMenu.add(runMenuItem);
 		frame.setJMenuBar(menuBar);
 
-		loginMenuItem.addActionListener(new MenuItemActionListener());
-		logoutMenuItem.addActionListener(new MenuItemActionListener());
 		newMenuItem.addActionListener(new MenuItemActionListener());
-		openMenuItem.addActionListener(new MenuItemActionListener());
 		runMenuItem.addActionListener(new MenuItemActionListener());
 		saveMenuItem.addActionListener(new SaveActionListener());
 		loginMenuItem.addActionListener(new loginActionListener());
+		logoutMenuItem.addActionListener(new logoutActionListener());
 
 		JPanel panel = new JPanel();
 		panel.setLayout(new BorderLayout());
 
 		// 初始化文本框
 		textAreaOfCode = new JTextArea();
-		textAreaOfInput = new JTextArea(8, 25);
-		textAreaOfResult = new JTextArea(8, 25);
+		textAreaOfCode.setFont(font);
+		textAreaOfInput = new JTextArea(8, 35);
+		textAreaOfInput.setFont(font);
+		textAreaOfResult = new JTextArea(8, 35);
+		textAreaOfResult.setFont(font);
 		textAreaOfCode.setLineWrap(true);
 		textAreaOfInput.setLineWrap(true);
 		textAreaOfResult.setLineWrap(true);
@@ -90,12 +109,6 @@ public class MainFrame extends JFrame {
 		textAreaOfResult.setBackground(Bisque);
 		panel.setBackground(AliceBlue);
 
-//		Font f = new Font("", 0, 12);
-//
-//		textAreaOfCode.setFont(f);
-//		textAreaOfInput.setFont(f);
-//		textAreaOfResult.setFont(f);
-
 		textAreaOfCode.setBorder(BorderFactory.createTitledBorder("BF code"));
 		textAreaOfInput.setBorder(BorderFactory.createTitledBorder("Input"));
 		textAreaOfResult.setBorder(BorderFactory.createTitledBorder("Result"));
@@ -106,7 +119,7 @@ public class MainFrame extends JFrame {
 		panel.add(textAreaOfResult, BorderLayout.EAST);
 
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setSize(600, 500);
+		frame.setSize(1024, 800);
 		frame.setLocation(400, 200);
 		frame.setVisible(true);
 	}
@@ -118,11 +131,7 @@ public class MainFrame extends JFrame {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			String cmd = e.getActionCommand();
-			if (cmd.equals("Logout")) {
-				textAreaOfCode.setText("Logout");
-			} else if (cmd.equals("Open")) {
-				textAreaOfCode.setText("Open");
-			} else if (cmd.equals("Run")) {
+			if (cmd.equals("Run")) {
 				String code = textAreaOfCode.getText();
 				String param = textAreaOfInput.getText() + "\n";
 				try {
@@ -132,6 +141,10 @@ public class MainFrame extends JFrame {
 					e1.printStackTrace();
 				}
 
+			} else if (cmd.equals("New")) {
+				textAreaOfCode.setText("");
+				textAreaOfInput.setText("");
+				textAreaOfResult.setText("");
 			}
 		}
 	}
@@ -141,11 +154,31 @@ public class MainFrame extends JFrame {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			String code = textAreaOfCode.getText();
-			try {
-				RemoteHelper.getInstance().getIOService().writeFile(code, "admin", "code");
-			} catch (RemoteException e1) {
-				e1.printStackTrace();
+
+			if (loginFrame.isLogin) {
+				// 检测是否已经登录
+				try {
+					SaveFrame saveframe = new SaveFrame();
+					boolean isSaved = RemoteHelper.getInstance().getIOService().writeFile(code, "admin",
+							"code" + String.valueOf(indexOfVersion));
+					JMenuItem versionMenuItem = new JMenuItem("admin" + "_" + "code" + String.valueOf(indexOfVersion));
+					indexOfVersion++;
+					versionMenu.add(versionMenuItem);
+					versionMenuItem.setFont(font);
+					versionMenuItem.addActionListener(new versionActionListener());
+					if (isSaved) {
+						saveframe.saveFrame();
+					} else {
+						saveframe.notSaveFrame();
+					}
+				} catch (RemoteException e1) {
+					e1.printStackTrace();
+				}
+			} else {
+				CueFrame cueFrame = new CueFrame();
+				cueFrame.pleaseLogin();
 			}
+
 		}
 
 	}
@@ -155,10 +188,44 @@ public class MainFrame extends JFrame {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			// TODO Auto-generated method stub
-
-			LoginFrame loginFrame = new LoginFrame();
+			if (!loginFrame.isLogin) {
+				loginFrame.createLoginFrame();
+			} else {
+				CueFrame cueFrame = new CueFrame();
+				cueFrame.alreadyLogin();
+			}
 
 		}
+	}
+
+	class logoutActionListener implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			// TODO Auto-generated method stub
+			LogoutFrame logoutFrame = new LogoutFrame();
+			loginFrame.isLogin = false;
+		}
+
+	}
+
+	class versionActionListener implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			// TODO Auto-generated method stub
+			String cmd = e.getActionCommand();
+			try {
+				String code = RemoteHelper.getInstance().getIOService().readFile("admin", cmd);
+				textAreaOfCode.setText(code);
+				textAreaOfInput.setText("");
+				textAreaOfResult.setText("");
+			} catch (RemoteException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		}
+
 	}
 
 }

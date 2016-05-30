@@ -1,5 +1,6 @@
 package runner;
 
+import java.awt.Font;
 import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
@@ -34,6 +35,7 @@ public class ClientRunner {
 	
 	private void initGUI() throws MalformedURLException, RemoteException, NotBoundException {
 		MainFrame mainFrame = new MainFrame();
+		mainFrame.createMainFrame();
 	}
 	
 	public void test(){
