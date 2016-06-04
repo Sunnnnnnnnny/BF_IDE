@@ -12,7 +12,7 @@ public class SaveFrame extends JFrame {
 	
 	public Font font = new Font("alias", Font.PLAIN, 16);
 
-	public void saveFrame() {
+	public void savedFrame() {
 
 		// 创建新窗体
 		JFrame frame = new JFrame("Save");
@@ -30,7 +30,7 @@ public class SaveFrame extends JFrame {
 		frame.setVisible(true);
 	}
 
-	public void notSaveFrame() {
+	public void notSavedFrame() {
 		// 创建新窗体
 		JFrame frame = new JFrame("Wrong!");
 		JPanel panel = new JPanel();

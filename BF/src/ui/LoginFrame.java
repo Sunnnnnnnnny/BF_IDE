@@ -19,42 +19,59 @@ import rmi.RemoteHelper;
 
 public class LoginFrame extends JFrame implements ActionListener {
 
-	public JTextField t_username = new JTextField(10);
-	public JPasswordField t_password = new JPasswordField(10);
-	public JButton loginButton = new JButton("Login");
-	public JFrame loginFrame = new JFrame("Login");
-	public Color AliceBlue = new Color(240, 248, 255);
-	public Font font = new Font("alias", Font.PLAIN, 30);
-	public String usernow;
-	public boolean isLogin;
+	private JFrame loginFrame = new JFrame("Login");
+	private JTextField t_username = new JTextField(10);
+	private JPasswordField t_password = new JPasswordField(10);
+	private JButton loginButton = new JButton("Login");
+	private Color AliceBlue = new Color(240, 248, 255);
+	private Font font = new Font("alias", Font.PLAIN, 25);
+	private String usernow;
+
+	public String getUsernow() {
+		return usernow;
+	}
 
 	public void createLoginFrame() {
 
-		// 创建新窗体
+		// 鍒涘缓鏂扮獥浣�
+		loginFrame.setLayout(new BorderLayout());
 		JPanel panel = new JPanel();
+		JPanel buttonPanel = new JPanel();
+		JPanel textPanel = new JPanel();
 		loginFrame.setResizable(false);
 
+		JLabel welcome = new JLabel("Welcome to use this IDE!");
+		welcome.setFont(font);
 		JLabel l_username = new JLabel("username");
 		JLabel l_password = new JLabel("password");
 
-		JButton cancelButton = new JButton("Cancel");
+		JButton cancelButton = new JButton("Exit");
+		JButton registerButton = new JButton("Register");
+		loginButton.setBounds(300, 200, 10, 10);
 
-		panel.add(l_username);
-		panel.add(t_username);
-		panel.add(l_password);
-		panel.add(t_password);
-		panel.add(loginButton);
-		panel.add(cancelButton);
-		loginFrame.add(panel);
+		panel.add(welcome);
+		textPanel.add(l_username);
+		textPanel.add(t_username);
+		textPanel.add(l_password);
+		textPanel.add(t_password);
+		buttonPanel.add(loginButton);
+		buttonPanel.add(registerButton);
+		buttonPanel.add(cancelButton);
+		loginFrame.add(panel, BorderLayout.NORTH);
+		loginFrame.add(buttonPanel, BorderLayout.SOUTH);
+		loginFrame.add(textPanel, BorderLayout.CENTER);
 
-		panel.setBackground(AliceBlue);
+		panel.setBackground(Color.LIGHT_GRAY);
+		buttonPanel.setBackground(Color.WHITE);
+		textPanel.setBackground(Color.WHITE);
 
-		loginFrame.setSize(600, 100);
+		loginFrame.setSize(400, 250);
 		loginFrame.setLocation(400, 200);
 		loginFrame.setVisible(true);
 
 		loginButton.addActionListener(this);
 		cancelButton.addActionListener(this);
+		registerButton.addActionListener(this);
 
 	}
 
@@ -74,22 +91,14 @@ public class LoginFrame extends JFrame implements ActionListener {
 				if (result) {
 
 					usernow = t_username.getText();
-					isLogin = true;
-					JFrame frame = new JFrame("Successfully!");
-					JPanel panel = new JPanel();
-					panel.setBackground(AliceBlue);
-					JLabel label = new JLabel("Login Successfully! Please exit to continue!", JLabel.CENTER);
-					label.setFont(font);
-					panel.add(label, BorderLayout.CENTER);
-					frame.add(panel, BorderLayout.CENTER);
-					frame.setSize(400, 200);
-					frame.setLocation(400, 200);
-					frame.setVisible(true);
 					loginFrame.setVisible(false);
+					MainFrame mainFrame = new MainFrame(usernow);
+					mainFrame.createMainFrame();
+					mainFrame.addVersionItem();
 
 				} else {
 
-					isLogin = false;
+					// isLogin = false;
 					JFrame frame = new JFrame("Wrong!");
 					JPanel panel = new JPanel();
 					panel.setBackground(AliceBlue);
@@ -108,8 +117,10 @@ public class LoginFrame extends JFrame implements ActionListener {
 				e1.printStackTrace();
 			}
 
-		} else if (cmd.equals("Cancel")) {
+		} else if (cmd.equals("Exit")) {
 			loginFrame.setVisible(false);
+		} else if (cmd.equals("Register")) {
+			RegisterFrame registerFrame = new RegisterFrame();
 		}
 
 	}

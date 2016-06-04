@@ -38,7 +38,7 @@ public class DataRemoteObject extends UnicastRemoteObject implements IOService, 
 	}
 
 	@Override
-	public String readFileList(String userId) throws RemoteException {
+	public String[] readFileList(String userId) throws RemoteException {
 		// TODO Auto-generated method stub
 		return iOService.readFileList(userId);
 	}
@@ -55,7 +55,10 @@ public class DataRemoteObject extends UnicastRemoteObject implements IOService, 
 		return userService.logout(username);
 	}
 
-	
+	public boolean info(String username, String password) throws RemoteException {
+		return userService.info(username, password);
+	}
+
 	public String execute(String code, String param) throws RemoteException {
 		return executeService.execute(code, param);
 	}
