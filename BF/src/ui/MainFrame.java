@@ -35,14 +35,16 @@ import runner.ClientRunner;
 import service.ExecuteService;
 
 public class MainFrame extends JFrame {
+	// 此类为主界面
 
-	private JFrame frame = new JFrame("BF Client");
+	private JFrame frame;
 	private JTextArea textAreaOfCode;
 	private JTextArea textAreaOfInput;
 	private JTextArea textAreaOfResult;
-	private JMenu versionMenu = new JMenu("Version");
+	private JMenu versionMenu;
 	private String usernow;
 	private Font font = new Font("alias", Font.PLAIN, 18);
+	private int isSaved = 0;
 
 	public MainFrame(String usernow) {
 		this.usernow = usernow;
@@ -51,6 +53,8 @@ public class MainFrame extends JFrame {
 	public void createMainFrame() {
 		// 创建新窗口
 
+		frame = new JFrame("BF Client");
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setLayout(new BorderLayout());
 		frame.setResizable(false);
 
@@ -62,6 +66,7 @@ public class MainFrame extends JFrame {
 		fileMenu.setFont(font);
 		JMenu runMenu = new JMenu("Run");
 		runMenu.setFont(font);
+		versionMenu = new JMenu("Version");
 		versionMenu.setFont(font);
 
 		menuBar.add(logMenu);
@@ -71,6 +76,9 @@ public class MainFrame extends JFrame {
 		JMenuItem logoutMenuItem = new JMenuItem("Logout");
 		logoutMenuItem.setFont(font);
 		logMenu.add(logoutMenuItem);
+		JMenuItem openMenuItem = new JMenuItem("Open");
+		openMenuItem.setFont(font);
+		fileMenu.add(openMenuItem);
 		JMenuItem newMenuItem = new JMenuItem("New");
 		newMenuItem.setFont(font);
 		fileMenu.add(newMenuItem);
@@ -80,9 +88,11 @@ public class MainFrame extends JFrame {
 		JMenuItem runMenuItem = new JMenuItem("Run");
 		runMenuItem.setFont(font);
 		runMenu.add(runMenuItem);
+		versionMenu.removeAll();
 
 		frame.setJMenuBar(menuBar);
 
+		openMenuItem.addActionListener(new MenuItemActionListener());
 		newMenuItem.addActionListener(new MenuItemActionListener());
 		runMenuItem.addActionListener(new MenuItemActionListener());
 		saveMenuItem.addActionListener(new SaveActionListener());
@@ -128,22 +138,6 @@ public class MainFrame extends JFrame {
 		frame.setVisible(true);
 	}
 
-	public void addVersionItem() {
-		try {
-			String[] file = RemoteHelper.getInstance().getIOService().readFileList(usernow);
-			if (file != null)
-				for (String f : file) {
-					JMenuItem versionMenuItem = new JMenuItem(f);
-					versionMenu.add(versionMenuItem);
-					versionMenuItem.setFont(font);
-					versionMenuItem.addActionListener(new VersionActionListener());
-				}
-		} catch (RemoteException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-
 	class MenuItemActionListener implements ActionListener {
 		/**
 		 * 子菜单响应事件
@@ -162,10 +156,31 @@ public class MainFrame extends JFrame {
 				}
 
 			} else if (cmd.equals("New")) {
+				isSaved = 0;
 				textAreaOfCode.setText("");
 				textAreaOfInput.setText("");
 				textAreaOfResult.setText("");
+				versionMenu.removeAll();
+			} else if (cmd.equals("Open")) {
+				OpenFrame openFrame = new OpenFrame(usernow);
+				String content = openFrame.openFile();
+				textAreaOfCode.setText(content);
+				// 根据对应用户添加version版本
+				try {
+					String[] file = RemoteHelper.getInstance().getIOService().readFileList(usernow);
+					if (file != null)
+						for (String f : file) {
+							JMenuItem versionMenuItem = new JMenuItem(f);
+							versionMenu.add(versionMenuItem);
+							versionMenuItem.setFont(font);
+							versionMenuItem.addActionListener(new VersionActionListener());
+						}
+				} catch (RemoteException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 			}
+
 		}
 	}
 
@@ -176,26 +191,41 @@ public class MainFrame extends JFrame {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			String code = textAreaOfCode.getText();
+			// 获取当前日期作为文件名
 			Date date = new Date();
 			DateFormat format = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
 			String time = format.format(date);
-			try {
-				SaveFrame saveframe = new SaveFrame();
-				boolean isSaved = RemoteHelper.getInstance().getIOService().writeFile(code, usernow, time);
+
+			String code = textAreaOfCode.getText();
+
+			if (isSaved == 0) {
+				NewFrame newFrame = new NewFrame(usernow, code, time);
 				JMenuItem versionMenuItem = new JMenuItem(usernow + "_" + time);
 				versionMenu.add(versionMenuItem);
 				versionMenuItem.setFont(font);
 				versionMenuItem.addActionListener(new VersionActionListener());
-				if (isSaved) {
-					saveframe.savedFrame();
-				} else {
-					saveframe.notSavedFrame();
+			} else {
+				SaveFrame saveframe = new SaveFrame();
+				boolean isSaved;
+				try {
+					isSaved = RemoteHelper.getInstance().getIOService().writeFile(code, usernow, time);
+					if (isSaved) {
+						saveframe.savedFrame();
+					} else {
+						saveframe.notSavedFrame();
+					}
+					JMenuItem versionMenuItem = new JMenuItem(usernow + "_" + time);
+					versionMenu.add(versionMenuItem);
+					versionMenuItem.setFont(font);
+					versionMenuItem.addActionListener(new VersionActionListener());
+				} catch (RemoteException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
 				}
-			} catch (RemoteException e1) {
-				e1.printStackTrace();
+
 			}
 
+			isSaved++;
 		}
 
 	}

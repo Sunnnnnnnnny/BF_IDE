@@ -11,11 +11,27 @@ import service.IOService;
 
 public class IOServiceImpl implements IOService {
 
+	String filename = "";
+
+	public boolean setFileName(String filename) {
+		this.filename = filename;
+		return true;
+	}
+
 	@Override
-	public boolean writeFile(String file, String userId, String fileName) {
+	public boolean creatFile(String userId, String filename) {
+		this.filename = filename;
 		File folder = new File(userId);
-		folder.mkdir();
-		File f = new File(userId + "/" + userId + "_" + fileName);
+		folder.mkdir();// 新建对应用户的文件夹
+		File myFile = new File(userId + "/" + filename);
+		myFile.mkdir();// 新建文件
+		return true;
+	}
+
+	@Override
+	public boolean writeFile(String file, String userId, String versionName) {
+
+		File f = new File(userId + "/" + filename + "/" + userId + "_" + versionName);
 		try {
 			FileWriter fw = new FileWriter(f, false);
 			fw.write(file);
@@ -32,7 +48,7 @@ public class IOServiceImpl implements IOService {
 	public String readFile(String userId, String fileName) {
 		// TODO Auto-generated method stub
 		String code = "";
-		File f = new File(userId + "/" + fileName);
+		File f = new File(userId + "/" + filename + "/" + fileName);
 		try {
 			FileReader reader = new FileReader(f);
 			BufferedReader br = new BufferedReader(reader);
@@ -52,7 +68,7 @@ public class IOServiceImpl implements IOService {
 	@Override
 	public String[] readFileList(String userId) {
 		// TODO Auto-generated method stub
-		File folder = new File(userId);
+		File folder = new File(userId + "/" + filename + "/");
 		return folder.list();
 	}
 

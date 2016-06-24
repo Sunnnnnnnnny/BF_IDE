@@ -9,6 +9,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 public class SaveFrame extends JFrame {
+	// 此类为保存文件的界面
 	
 	public Font font = new Font("alias", Font.PLAIN, 16);
 

@@ -25,6 +25,14 @@ public class DataRemoteObject extends UnicastRemoteObject implements IOService, 
 		executeService = new ExecuteServiceImpl();
 	}
 
+	public boolean setFileName(String filename) throws RemoteException {
+		return iOService.setFileName(filename);
+	}
+
+	public boolean creatFile(String userId, String filename) throws RemoteException {
+		return iOService.creatFile(userId, filename);
+	}
+
 	@Override
 	public boolean writeFile(String file, String userId, String fileName) throws RemoteException {
 		// TODO Auto-generated method stub

@@ -9,6 +9,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 public class CueFrame extends JFrame {
+	// 此类为所有提示类界面
 
 	public Font font = new Font("alias", Font.PLAIN, 20);
 

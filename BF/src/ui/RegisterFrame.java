@@ -18,6 +18,7 @@ import javax.swing.JTextField;
 import rmi.RemoteHelper;
 
 public class RegisterFrame extends JFrame implements ActionListener {
+	// 此类为注册新用户的界面
 
 	private JFrame frame = new JFrame("Register");
 	private Color AliceBlue = new Color(240, 248, 255);

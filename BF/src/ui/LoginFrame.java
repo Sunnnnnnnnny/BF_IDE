@@ -18,6 +18,7 @@ import javax.swing.border.Border;
 import rmi.RemoteHelper;
 
 public class LoginFrame extends JFrame implements ActionListener {
+	// 此类为登录界面
 
 	private JFrame loginFrame = new JFrame("Login");
 	private JTextField t_username = new JTextField(10);
@@ -33,7 +34,8 @@ public class LoginFrame extends JFrame implements ActionListener {
 
 	public void createLoginFrame() {
 
-		// 鍒涘缓鏂扮獥浣�
+		// 创建新窗口
+		loginFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		loginFrame.setLayout(new BorderLayout());
 		JPanel panel = new JPanel();
 		JPanel buttonPanel = new JPanel();
@@ -61,7 +63,7 @@ public class LoginFrame extends JFrame implements ActionListener {
 		loginFrame.add(buttonPanel, BorderLayout.SOUTH);
 		loginFrame.add(textPanel, BorderLayout.CENTER);
 
-		panel.setBackground(Color.LIGHT_GRAY);
+		panel.setBackground(Color.WHITE);
 		buttonPanel.setBackground(Color.WHITE);
 		textPanel.setBackground(Color.WHITE);
 
@@ -94,7 +96,6 @@ public class LoginFrame extends JFrame implements ActionListener {
 					loginFrame.setVisible(false);
 					MainFrame mainFrame = new MainFrame(usernow);
 					mainFrame.createMainFrame();
-					mainFrame.addVersionItem();
 
 				} else {
 
