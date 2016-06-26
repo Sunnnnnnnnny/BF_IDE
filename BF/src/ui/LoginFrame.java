@@ -21,11 +21,11 @@ public class LoginFrame extends JFrame implements ActionListener {
 	// 此类为登录界面
 
 	private JFrame loginFrame = new JFrame("Login");
-	private JTextField t_username = new JTextField(10);
-	private JPasswordField t_password = new JPasswordField(10);
+	private JTextField t_username = new JTextField(20);
+	private JPasswordField t_password = new JPasswordField(20);
 	private JButton loginButton = new JButton("Login");
 	private Color AliceBlue = new Color(240, 248, 255);
-	private Font font = new Font("alias", Font.PLAIN, 25);
+	private Font font = new Font("alias", Font.PLAIN, 30);
 	private String usernow;
 
 	public String getUsernow() {
@@ -44,8 +44,10 @@ public class LoginFrame extends JFrame implements ActionListener {
 
 		JLabel welcome = new JLabel("Welcome to use this IDE!");
 		welcome.setFont(font);
-		JLabel l_username = new JLabel("username");
-		JLabel l_password = new JLabel("password");
+		JLabel l_username = new JLabel("username:");
+		l_username.setFont(new Font("alias",Font.PLAIN,18));
+		JLabel l_password = new JLabel("password:");
+		l_password.setFont(new Font("alias",Font.PLAIN,18));
 
 		JButton cancelButton = new JButton("Exit");
 		JButton registerButton = new JButton("Register");

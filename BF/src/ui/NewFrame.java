@@ -69,7 +69,7 @@ public class NewFrame extends JFrame implements ActionListener {
 		if (cmd.equals("OK")) {
 			try {
 				RemoteHelper.getInstance().getIOService().creatFile(usernow, text.getText());
-				SaveFrame saveframe = new SaveFrame();
+				CueFrame saveframe = new CueFrame();
 				boolean isSaved = RemoteHelper.getInstance().getIOService().writeFile(code, usernow, time);
 				if (isSaved) {
 					saveframe.savedFrame();

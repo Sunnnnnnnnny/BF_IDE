@@ -1,11 +1,17 @@
 package ui;
 
+import java.awt.AWTEvent;
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
+import java.awt.Container;
 import java.awt.Font;
 import java.awt.Insets;
+import java.awt.KeyEventPostProcessor;
+import java.awt.KeyboardFocusManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.rmi.RemoteException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -42,6 +48,8 @@ public class MainFrame extends JFrame {
 	private JTextArea textAreaOfInput;
 	private JTextArea textAreaOfResult;
 	private JMenu versionMenu;
+	private JMenuItem logoutMenuItem;
+	private JMenuItem saveMenuItem;
 	private String usernow;
 	private Font font = new Font("alias", Font.PLAIN, 18);
 	private int isSaved = 0;
@@ -73,7 +81,7 @@ public class MainFrame extends JFrame {
 		menuBar.add(fileMenu);
 		menuBar.add(runMenu);
 		menuBar.add(versionMenu);
-		JMenuItem logoutMenuItem = new JMenuItem("Logout");
+		logoutMenuItem = new JMenuItem("Logout");
 		logoutMenuItem.setFont(font);
 		logMenu.add(logoutMenuItem);
 		JMenuItem openMenuItem = new JMenuItem("Open");
@@ -82,7 +90,7 @@ public class MainFrame extends JFrame {
 		JMenuItem newMenuItem = new JMenuItem("New");
 		newMenuItem.setFont(font);
 		fileMenu.add(newMenuItem);
-		JMenuItem saveMenuItem = new JMenuItem("Save");
+		saveMenuItem = new JMenuItem("Save");
 		saveMenuItem.setFont(font);
 		fileMenu.add(saveMenuItem);
 		JMenuItem runMenuItem = new JMenuItem("Run");
@@ -136,6 +144,32 @@ public class MainFrame extends JFrame {
 		frame.setSize(1024, 800);
 		frame.setLocation(400, 200);
 		frame.setVisible(true);
+
+		// 添加键盘监听
+		KeyboardFocusManager manager = KeyboardFocusManager.getCurrentKeyboardFocusManager();
+		manager.addKeyEventPostProcessor((KeyEventPostProcessor) this.getMyKeyEventHandler());
+	}
+
+	public KeyEventPostProcessor getMyKeyEventHandler() {
+		return new KeyEventPostProcessor() {
+
+			@Override
+			public boolean postProcessKeyEvent(KeyEvent e) {
+				// TODO Auto-generated method stub
+				if (e.getKeyCode() == KeyEvent.VK_S && e.getKeyCode() == KeyEvent.VK_CONTROL) {
+					// Ctrl+s保存
+					saveMenuItem.doClick();
+				} else if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+					// esc登出
+					logoutMenuItem.doClick();
+				} 
+//				else if (e.getKeyCode() == KeyEvent.VK_Z) {
+//					// Ctrl+z撤回
+//				}
+				return false;
+			}
+
+		};
 	}
 
 	class MenuItemActionListener implements ActionListener {
@@ -162,6 +196,7 @@ public class MainFrame extends JFrame {
 				textAreaOfResult.setText("");
 				versionMenu.removeAll();
 			} else if (cmd.equals("Open")) {
+				isSaved = 1;
 				OpenFrame openFrame = new OpenFrame(usernow);
 				String content = openFrame.openFile();
 				textAreaOfCode.setText(content);
@@ -205,7 +240,7 @@ public class MainFrame extends JFrame {
 				versionMenuItem.setFont(font);
 				versionMenuItem.addActionListener(new VersionActionListener());
 			} else {
-				SaveFrame saveframe = new SaveFrame();
+				CueFrame saveframe = new CueFrame();
 				boolean isSaved;
 				try {
 					isSaved = RemoteHelper.getInstance().getIOService().writeFile(code, usernow, time);

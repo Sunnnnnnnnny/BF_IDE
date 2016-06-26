@@ -32,7 +32,7 @@ public class CueFrame extends JFrame {
 	// }
 
 	public void alreadyLogin() {
-		// 创建新窗体
+		// 登陆失败
 		JFrame frame = new JFrame("Wrong!");
 		JPanel panel = new JPanel();
 		JLabel label = new JLabel("Already login!", JLabel.CENTER);
@@ -49,7 +49,7 @@ public class CueFrame extends JFrame {
 	}
 
 	public void registerFail() {
-		// 创建新窗体
+		// 注册失败
 		JFrame frame = new JFrame("Wrong!");
 		JPanel panel = new JPanel();
 		JLabel label = new JLabel("Please enter the same password!", JLabel.CENTER);
@@ -66,7 +66,7 @@ public class CueFrame extends JFrame {
 	}
 
 	public void registerSuccessfully() {
-		// 创建新窗体
+		// 注册成功
 		JFrame frame = new JFrame("Success");
 		JPanel panel = new JPanel();
 		JLabel label = new JLabel("Register Successfully! Please exit to continue", JLabel.CENTER);
@@ -83,7 +83,7 @@ public class CueFrame extends JFrame {
 	}
 
 	public void duplicate() {
-		// 创建新窗体
+		// 注册时用户名已被占用
 		JFrame frame = new JFrame("Wrong!");
 		JPanel panel = new JPanel();
 		JLabel label = new JLabel("Sorry!The username has been registered!", JLabel.CENTER);
@@ -95,6 +95,41 @@ public class CueFrame extends JFrame {
 		frame.add(panel);
 
 		frame.setSize(500, 200);
+		frame.setLocation(400, 200);
+		frame.setVisible(true);
+	}
+
+	public void savedFrame() {
+
+		// 保存成功
+		JFrame frame = new JFrame("Save");
+		JPanel panel = new JPanel();
+		JLabel label = new JLabel("Save Successfully!", JLabel.CENTER);
+		label.setFont(font);
+
+		Color AliceBlue = new Color(240, 248, 255);
+		panel.setBackground(AliceBlue);
+		panel.add(label, BorderLayout.CENTER);
+		frame.add(panel, BorderLayout.CENTER);
+
+		frame.setSize(400, 200);
+		frame.setLocation(400, 200);
+		frame.setVisible(true);
+	}
+
+	public void notSavedFrame() {
+		// 保存失败
+		JFrame frame = new JFrame("Wrong!");
+		JPanel panel = new JPanel();
+		JLabel label = new JLabel("Cannot Save Successfully!", JLabel.CENTER);
+		label.setFont(font);
+
+		Color AliceBlue = new Color(240, 248, 255);
+		panel.setBackground(AliceBlue);
+		panel.add(label, BorderLayout.CENTER);
+		frame.add(panel, BorderLayout.CENTER);
+
+		frame.setSize(400, 200);
 		frame.setLocation(400, 200);
 		frame.setVisible(true);
 	}
