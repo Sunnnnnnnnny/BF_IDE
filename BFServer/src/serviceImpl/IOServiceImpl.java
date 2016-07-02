@@ -14,12 +14,18 @@ public class IOServiceImpl implements IOService {
 	String filename = "";
 
 	public boolean setFileName(String filename) {
+		/**
+		 * 设置当前文件
+		 */
 		this.filename = filename;
 		return true;
 	}
 
 	@Override
 	public boolean creatFile(String userId, String filename) {
+		/**
+		 * 创建对应用户文件夹
+		 */
 		this.filename = filename;
 		File folder = new File(userId);
 		folder.mkdir();// 新建对应用户的文件夹
@@ -30,6 +36,9 @@ public class IOServiceImpl implements IOService {
 
 	@Override
 	public boolean writeFile(String file, String userId, String versionName) {
+		/**
+		 * 保存时写入相应文件
+		 */
 
 		File f = new File(userId + "/" + filename + "/" + userId + "_" + versionName);
 		try {
@@ -47,6 +56,9 @@ public class IOServiceImpl implements IOService {
 	@Override
 	public String readFile(String userId, String fileName) {
 		// TODO Auto-generated method stub
+		/**
+		 * 读出相应文件
+		 */
 		String code = "";
 		File f = new File(userId + "/" + filename + "/" + fileName);
 		try {
@@ -68,6 +80,9 @@ public class IOServiceImpl implements IOService {
 	@Override
 	public String[] readFileList(String userId) {
 		// TODO Auto-generated method stub
+		/**
+		 * 返回文件名列表
+		 */
 		File folder = new File(userId + "/" + filename + "/");
 		return folder.list();
 	}

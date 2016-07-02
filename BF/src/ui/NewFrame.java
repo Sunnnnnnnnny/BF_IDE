@@ -25,7 +25,7 @@ import ui.MainFrame.VersionActionListener;
 public class NewFrame extends JFrame implements ActionListener {
 	// 此类为创建新文件时，保存文件的界面
 
-	public Font font = new Font("alias", Font.PLAIN, 16);
+	public Font font = new Font("alias", Font.PLAIN, 18);
 	String usernow = "";
 	String code = "";
 	String time = "";
@@ -39,8 +39,9 @@ public class NewFrame extends JFrame implements ActionListener {
 
 		// 创建新窗体
 		frame = new JFrame("Save as");
-		text = new JTextField(10);
+		text = new JTextField(20);
 		JPanel panel = new JPanel();
+		JPanel buttonPanel = new JPanel();
 		JLabel label = new JLabel("new filename:");
 		JButton confirm = new JButton("OK");
 		JButton cancel = new JButton("Cancel");
@@ -48,11 +49,13 @@ public class NewFrame extends JFrame implements ActionListener {
 
 		Color AliceBlue = new Color(240, 248, 255);
 		panel.setBackground(AliceBlue);
+		buttonPanel.setBackground(AliceBlue);
 		panel.add(label);
 		panel.add(text);
-		panel.add(confirm, BorderLayout.SOUTH);
-		panel.add(cancel, BorderLayout.SOUTH);
+		buttonPanel.add(confirm);
+		buttonPanel.add(cancel);
 		frame.add(panel);
+		frame.add(buttonPanel, BorderLayout.SOUTH);
 
 		frame.setSize(400, 200);
 		frame.setLocation(400, 200);
@@ -68,6 +71,7 @@ public class NewFrame extends JFrame implements ActionListener {
 		String cmd = e.getActionCommand();
 		if (cmd.equals("OK")) {
 			try {
+				// 根据文件名，在服务器端创建新文件夹
 				RemoteHelper.getInstance().getIOService().creatFile(usernow, text.getText());
 				CueFrame saveframe = new CueFrame();
 				boolean isSaved = RemoteHelper.getInstance().getIOService().writeFile(code, usernow, time);

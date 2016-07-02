@@ -13,24 +13,6 @@ public class CueFrame extends JFrame {
 
 	public Font font = new Font("alias", Font.PLAIN, 20);
 
-	// public void pleaseLogin() {
-	//
-	// // 创建新窗体
-	// JFrame frame = new JFrame("Wrong!");
-	// JPanel panel = new JPanel();
-	// JLabel label = new JLabel("Sorry! Please login first!", JLabel.CENTER);
-	// label.setFont(font);
-	//
-	// Color AliceBlue = new Color(240, 248, 255);
-	// panel.setBackground(AliceBlue);
-	// panel.add(label);
-	// frame.add(panel);
-	//
-	// frame.setSize(400, 200);
-	// frame.setLocation(400, 200);
-	// frame.setVisible(true);
-	// }
-
 	public void alreadyLogin() {
 		// 登陆失败
 		JFrame frame = new JFrame("Wrong!");
@@ -122,6 +104,40 @@ public class CueFrame extends JFrame {
 		JFrame frame = new JFrame("Wrong!");
 		JPanel panel = new JPanel();
 		JLabel label = new JLabel("Cannot Save Successfully!", JLabel.CENTER);
+		label.setFont(font);
+
+		Color AliceBlue = new Color(240, 248, 255);
+		panel.setBackground(AliceBlue);
+		panel.add(label, BorderLayout.CENTER);
+		frame.add(panel, BorderLayout.CENTER);
+
+		frame.setSize(400, 200);
+		frame.setLocation(400, 200);
+		frame.setVisible(true);
+	}
+
+	public void notChangedFrame() {
+		// 未修改保存
+		JFrame frame = new JFrame("Wrong!");
+		JPanel panel = new JPanel();
+		JLabel label = new JLabel("No Change!", JLabel.CENTER);
+		label.setFont(font);
+
+		Color AliceBlue = new Color(240, 248, 255);
+		panel.setBackground(AliceBlue);
+		panel.add(label, BorderLayout.CENTER);
+		frame.add(panel, BorderLayout.CENTER);
+
+		frame.setSize(400, 200);
+		frame.setLocation(400, 200);
+		frame.setVisible(true);
+	}
+
+	public void noAuthority() {
+		// 没有权限查看他人文件
+		JFrame frame = new JFrame("Wrong!");
+		JPanel panel = new JPanel();
+		JLabel label = new JLabel("You cannot open other user's file!", JLabel.CENTER);
 		label.setFont(font);
 
 		Color AliceBlue = new Color(240, 248, 255);

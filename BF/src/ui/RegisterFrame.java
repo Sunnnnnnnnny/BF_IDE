@@ -21,10 +21,9 @@ public class RegisterFrame extends JFrame implements ActionListener {
 	// 此类为注册新用户的界面
 
 	private JFrame frame = new JFrame("Register");
-	private Color AliceBlue = new Color(240, 248, 255);
-	private Font font = new Font("alias", Font.PLAIN, 12);
-	private JTextField t_username = new JTextField(10);
-	private JPasswordField t_password1 = new JPasswordField(10);
+	private Font font = new Font("alias", Font.PLAIN, 18);
+	private JTextField t_username = new JTextField(20);
+	private JPasswordField t_password1 = new JPasswordField(20);
 	private JPasswordField t_password2 = new JPasswordField(10);
 
 	public RegisterFrame() {
@@ -35,8 +34,11 @@ public class RegisterFrame extends JFrame implements ActionListener {
 		JPanel panel = new JPanel();
 		JPanel buttonPanel = new JPanel();
 		JLabel l_username = new JLabel("username:");
+		l_username.setFont(font);
 		JLabel l_password1 = new JLabel("password:");
+		l_password1.setFont(font);
 		JLabel l_password2 = new JLabel("confirm your password:");
+		l_password2.setFont(font);
 		JButton register = new JButton("Register");
 		JButton cancel = new JButton("Cancel");
 
@@ -49,11 +51,11 @@ public class RegisterFrame extends JFrame implements ActionListener {
 		buttonPanel.add(register);
 		buttonPanel.add(cancel);
 
-		panel.setBackground(AliceBlue);
-		buttonPanel.setBackground(AliceBlue);
+		panel.setBackground(Color.WHITE);
+		buttonPanel.setBackground(Color.WHITE);
 		frame.add(panel);
 		frame.add(buttonPanel, BorderLayout.SOUTH);
-		frame.setSize(700, 150);
+		frame.setSize(400, 250);
 		frame.setLocation(400, 200);
 		frame.setVisible(true);
 		frame.setResizable(false);
@@ -87,7 +89,7 @@ public class RegisterFrame extends JFrame implements ActionListener {
 						// 如果重名
 						CueFrame cueFrame = new CueFrame();
 						cueFrame.duplicate();
-					}else{
+					} else {
 						// 不重名，注册成功
 						frame.setVisible(false);
 						CueFrame cueFrame = new CueFrame();
@@ -97,7 +99,7 @@ public class RegisterFrame extends JFrame implements ActionListener {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-				
+
 			} else {
 				// 两次输入密码不符
 				CueFrame cueframe = new CueFrame();

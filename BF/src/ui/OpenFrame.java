@@ -35,28 +35,34 @@ public class OpenFrame extends JFrame {
 			// 获取文件夹名字
 			String[] dir = myfile.getAbsolutePath().split("\\\\");
 			String name = dir[dir.length - 2];
-
-			try {
-				RemoteHelper.getInstance().getIOService().setFileName(name);
-			} catch (RemoteException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-
-			try {
-				FileReader fr = new FileReader(myfile);
-				BufferedReader br = new BufferedReader(fr);
-				for (String tmp = null; (tmp = br.readLine()) != null; tmp = null) {
-					file += tmp;
-
+			if (!dir[dir.length - 1].startsWith(usernow)) {
+				CueFrame cueFrame = new CueFrame();
+				cueFrame.noAuthority();
+				return "";
+			} else {
+				try {
+					RemoteHelper.getInstance().getIOService().setFileName(name);
+				} catch (RemoteException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
 				}
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+
+				try {
+					FileReader fr = new FileReader(myfile);
+					BufferedReader br = new BufferedReader(fr);
+					for (String tmp = null; (tmp = br.readLine()) != null; tmp = null) {
+						file += tmp;
+
+					}
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				return file;
 			}
 
 		}
-		return file;
+		return "";
 	}
 
 }

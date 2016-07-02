@@ -20,21 +20,25 @@ import rmi.RemoteHelper;
 public class LoginFrame extends JFrame implements ActionListener {
 	// 此类为登录界面
 
-	private JFrame loginFrame = new JFrame("Login");
-	private JTextField t_username = new JTextField(20);
-	private JPasswordField t_password = new JPasswordField(20);
-	private JButton loginButton = new JButton("Login");
+	private JFrame loginFrame;
+	private JTextField t_username;
+	private JPasswordField t_password;
+	private JButton loginButton;
+	private String usernow;
 	private Color AliceBlue = new Color(240, 248, 255);
 	private Font font = new Font("alias", Font.PLAIN, 30);
-	private String usernow;
 
 	public String getUsernow() {
 		return usernow;
 	}
 
 	public void createLoginFrame() {
-
 		// 创建新窗口
+		loginFrame = new JFrame("Login");
+		t_username = new JTextField(20);
+		t_password = new JPasswordField(20);
+		loginButton = new JButton("Login");
+
 		loginFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		loginFrame.setLayout(new BorderLayout());
 		JPanel panel = new JPanel();
@@ -45,9 +49,9 @@ public class LoginFrame extends JFrame implements ActionListener {
 		JLabel welcome = new JLabel("Welcome to use this IDE!");
 		welcome.setFont(font);
 		JLabel l_username = new JLabel("username:");
-		l_username.setFont(new Font("alias",Font.PLAIN,18));
+		l_username.setFont(new Font("alias", Font.PLAIN, 18));
 		JLabel l_password = new JLabel("password:");
-		l_password.setFont(new Font("alias",Font.PLAIN,18));
+		l_password.setFont(new Font("alias", Font.PLAIN, 18));
 
 		JButton cancelButton = new JButton("Exit");
 		JButton registerButton = new JButton("Register");
@@ -83,9 +87,8 @@ public class LoginFrame extends JFrame implements ActionListener {
 		// TODO Auto-generated method stub
 		String cmd = e.getActionCommand();
 		if (cmd.equals("Login")) {
-
 			try {
-
+				// 连接服务器，比较用户名和密码是否匹配
 				char[] password_c = t_password.getPassword();
 				String password = "";
 				for (char c : password_c) {
@@ -93,15 +96,13 @@ public class LoginFrame extends JFrame implements ActionListener {
 				}
 				boolean result = RemoteHelper.getInstance().getUserService().login(t_username.getText(), password);
 				if (result) {
-
+					// 登陆成功，进入主界面
 					usernow = t_username.getText();
 					loginFrame.setVisible(false);
 					MainFrame mainFrame = new MainFrame(usernow);
 					mainFrame.createMainFrame();
-
 				} else {
-
-					// isLogin = false;
+					// 登录失败，报错
 					JFrame frame = new JFrame("Wrong!");
 					JPanel panel = new JPanel();
 					panel.setBackground(AliceBlue);
@@ -123,6 +124,7 @@ public class LoginFrame extends JFrame implements ActionListener {
 		} else if (cmd.equals("Exit")) {
 			loginFrame.setVisible(false);
 		} else if (cmd.equals("Register")) {
+			// 进入注册界面
 			RegisterFrame registerFrame = new RegisterFrame();
 		}
 

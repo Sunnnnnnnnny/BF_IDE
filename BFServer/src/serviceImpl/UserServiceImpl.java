@@ -14,6 +14,9 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public boolean login(String username, String password) throws RemoteException {
+		/**
+		 * 检查用户名与密码是否对应
+		 */
 		File dataBase = new File("DataBase.txt");
 		String truePassword = "";
 		boolean result = false;
@@ -43,6 +46,9 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public boolean info(String username, String password) throws RemoteException {
+		/**
+		 * 保存用户名及密码信息
+		 */
 		File dataBase = new File("DataBase.txt");
 		boolean isDuplicate = false;
 		try {
@@ -65,13 +71,6 @@ public class UserServiceImpl implements UserService {
 				}
 
 			}
-
-			// for (String tmp = null; (tmp = br.readLine()) != null; tmp =
-			// null) {
-			// System.out.println(tmp);
-			//
-			// }
-			// System.out.println("我打印了");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
